@@ -1,130 +1,350 @@
-import React, { useState } from 'react';
-import {BrowserRouter as Router,Link, Route, Routes} from 'react-router-dom'
+import React, { useState } from "react";
+import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import {
+  Button,
+  Box,
+  Typography,
+  AppBar,
+  Grid,
+  Toolbar,
+  Drawer,
+  Menu,
+  MenuItem,
+  ListItem,
+  List,
+  ListItemText,
+} from "@mui/material";
+import { StlyedLink } from "./styles";
+import { colors } from "./theme";
+import { CtaButton } from "./Common/CtaButton";
+import { StlyedMenu } from "./styles";
 
-function Logo(){
-  return(
-    <span> DB</span>
-  )
+function Logo() {
+  return (
+    <Typography
+      sx={{
+        color: "customColor.secondary",
+        fontWeight: 900,
+      }}
+    >
+      DB
+    </Typography>
+  );
 
   // border-2 border-rose-500
 }
 
-
-function Nav(){
+function Nav() {
   const links = [
-      {name:'HOME',link:'/'},
-      {name:'ABOUT US',link:'/about'},
-      {name:'PRODUCTS',link:'/product'},
-      {name:'CONTACT',link:'/contact'}
+    { name: "HOME", link: "/" },
+    { name: "ABOUT US", link: "/about" },
+    { name: "PRODUCTS", link: "/product" },
+    { name: "CONTACT", link: "/contact" },
   ];
 
-  let [open,setOpen] = useState(false);
-  
-  return(
-  <nav >
+  const [open, setOpen] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
-    <div >
-    {/* border-2 border-yellow-300 */}
+  const handleDrawerToggle = () => {
+    setOpenDrawer((prevValue) => !prevValue);
+    setOpen((prevValue) => !prevValue);
+  };
 
-      <Logo />
+  return (
+    <AppBar
+      sx={{
+        backgroundColor: "customColor.primary",
+        boxShadow: "none",
+        height: "10vh",
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignContent: "center",
+        }}
+      >
+        {/* border-2 border-yellow-300 */}
 
-      <div >
+        <Logo />
 
-        <ion-icon name={open?'close':'menu'}></ion-icon>
+        <Box
+          sx={{
+            display: { xs: "block", md: "none" },
+            color: "customColor.secondary",
+            fontSize: "3rem",
+            cursor: "pointer",
+          }}
+          onClick={handleDrawerToggle}
+        >
+          <ion-icon name={open ? "close" : "menu"} />
+        </Box>
+        {/* <ul> */}
+        <Drawer
+          anchor="top"
+          open={openDrawer}
+          onClose={handleDrawerToggle}
+          sx={
+            {
+              // "& .MuiDrawer-paper": {
+              //   marginTop: "10vh", // Adjust as needed this is the space on the navbar
+              // },
+            }
+          }
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              height: "65vh",
+              backgroundColor: "customColor.tetiary",
+            }}
+          >
+            <List sx={{ paddingTop: 0 }}>
+              <>
+                {/* NavBar header */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                    // height: "10vh",
+                    backgroundColor: "customColor.tetiary",
+                    padding: "0px 23px",
+                  }}
+                >
+                  {/* <Box sx={{display:'none'}}> a</Box> */}
+                  <Logo />
+                  <Box
+                    sx={{
+                      display: { xs: "block", md: "none" },
+                      color: "customColor.secondary",
+                      fontSize: "3rem",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleDrawerToggle}
+                  >
+                    <ion-icon name={open ? "close" : "menu"} />
+                  </Box>
+                </Box>
+                {/* Navbar Items */}
+                {links.map((item, index) => (
+                  <MenuItem
+                    key={index}
+                    // onClick={}
+                    sx={{ borderBottom: "0.1px solid #CCC" }}
+                  >
+                    <StlyedLink onClick={handleDrawerToggle} key={item.name} to={item.link}>
+                      <ListItemText>
+                        <Typography variant="navItem">{item.name}</Typography>
+                      </ListItemText>
+                    </StlyedLink>
+                  </MenuItem>
+                ))}
+              </>
+            </List>
+          </Box>
+        </Drawer>
 
-      </div>
+        <Box
+          sx={{
+            display: { xs: "none", md: "block" },
+            gap: 3,
+            marginRight: 7,
+          }}
+        >
+          {/* border-2 border-rose-500 */}
 
-      <ul>
-        {/* border-2 border-rose-500 */}
+          {links.map((link) => (
+            <StlyedLink
+              key={link.name}
+              to={link.link}
+              sx={{
+                color: "customColor.secondary",
+              }}
+            >
+              {" "}
+              {link.name}
+            </StlyedLink>
+          ))}
+        </Box>
+        {/* </ul> */}
+      </Toolbar>
+    </AppBar>
+  );
+}
 
-        {
-          links.map(link=>(
-            <Link key={link.name} to={link.link} > {link.name} </Link>
-            ))
-        }
-
-      </ul>
-    
-    </div>
-  </nav>
-
-  )}
-
-function Home(){
-
-  return(
+function Home() {
+  return (
     <>
-      <div >
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{ gap: 2 }}
+            direction="column"
+            marginX="auto"
+            justifyContent="center"
+          >
+            <Typography variant="v1">
+              HELLO <br /> DONUTS
+            </Typography>
 
-          <h1 
-          >HELLO <br /> DONUTS</h1> 
+            <Typography variant="v2">
+              A healthy taste of deliciousness
+            </Typography>
 
-          <p>A healthy taste of deliciousness</p>
+            <CtaButton variant="outlined"> CONTACT US </CtaButton>
+          </Grid>
+        </Grid>
+      </Grid>
 
-      </div>
+      {/* <button class='cta'> CONTACT US</button> */}
+    </>
+  );
+}
 
+function About() {
+  return (
+    <>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{ gap: 2 }}
+            direction="column"
+            marginX="auto"
+            justifyContent="center"
+          >
+            <Typography variant="v1">
+              About us
+            </Typography>
 
-        {/* <button class='cta'> CONTACT US</button> */}
+            <Typography variant="v2">
+            Leran more about our company and mission
+            </Typography>
+
+            <CtaButton variant="outlined"> CONTACT US </CtaButton>
+          </Grid>
+        </Grid>
+      </Grid>
+
       
     </>
-  )
+  );
 }
 
-function About(){
-  return(
-    <div >
-      <h1 >About us</h1>
-      <p>Leran more about our company and mission</p>
-    </div>
-  )
+function Product() {
+  return (
+
+    <>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{ gap: 2 }}
+            direction="column"
+            marginX="auto"
+            justifyContent="center"
+          >
+            <Typography variant="v1">
+              Products
+            </Typography>
+
+            <Typography variant="v2">
+            This is a line of our products
+            </Typography>
+
+            <CtaButton variant="outlined"> CONTACT US </CtaButton>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      
+    </>
+  );
 }
 
+function Contact() {
+  return (
 
-function Product(){
-  return(
-    <div >
-      <h1 > Products</h1>
-      <p>This is a line up of our products</p>
-    </div>
-  )
-}
+    <>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{ gap: 2 }}
+            direction="column"
+            marginX="auto"
+            justifyContent="center"
+          >
+            <Typography variant="v1">
+              Contact us
+            </Typography>
 
+            <Typography variant="v2">
+            Get in touch with us!
+            </Typography>
 
-function Contact(){
-  return(
-    <div>
-      <h1>Contact us</h1>
-      <p>Get in touch with us!</p>
-    </div>
-  )
+            <CtaButton variant="outlined"> CONTACT US </CtaButton>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      
+    </>
+  );
 }
 
 function App() {
-
   return (
-    <Router >
-        <Nav />
-        
-        
-        <div > 
-          <Routes>
-            <Route path='/' element={<Home/>} />
-            <Route path='about' element={<About/>} />
-            <Route path='product' element={<Product/>} />
-            <Route path='contact' element={<Contact/>} />
-          </Routes>
-        </div>
-        
+    <Router>
+      <Nav />
+
+      <Box sx={{ backgroundColor:'customColor.primary'}}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="product" element={<Product />} />
+          <Route path="contact" element={<Contact />} />
+        </Routes>
+      </Box>
     </Router>
-  )
+  );
 }
 
 export default App;
 
-  {/* <Link to="/">Home</Link>
+{
+  /* <Link to="/">Home</Link>
         <Link to="/about">About us</Link>
         <Link to="/product">Products</Link>
-        <Link to="/contact">Contact</Link> */}
-
+        <Link to="/contact">Contact</Link> */
+}
 
 // material UI styling.
